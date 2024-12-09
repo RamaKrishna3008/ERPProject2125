@@ -247,10 +247,10 @@ body {
             <div class="dropdown-menu">
                 <a href="/Admin/AllPayments">All Payments</a>
             </div>
+            </div>
         <div class="dropdown">
         <a href="/Logout">Logout</a>
         </div>
-    </div>
     </div>
     <div id="toast" class="toast"></div>
     <script>

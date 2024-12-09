@@ -430,6 +430,29 @@ body, html {
 .forgot-password-btn:hover {
     color: #3498db;
 }
+/* Align eye icon */
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #2c3e50;
+    transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: #3498db;
+}
+
+/* Position wrapper for the password field */
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
     </style>
 </head>
 <body onload="loadcaptcha()">
@@ -445,7 +468,14 @@ body, html {
                 <h2><i class="fas fa-user icon"></i>Login</h2>
                 <form action="checklogin" method="post">
     				<input type="text" id="username" name="username" placeholder="Username" required>
+    				<div class="password-container">
     				<input type="password" id="password" name="password" placeholder="Password" required>
+    				<span class="toggle-password" onclick="togglePasswordVisibility()">
+        			<i class="fas fa-eye" id="passwordIcon"></i>
+    				</span>
+					</div>
+
+
     			<div class="captcha-container">
        			 <img id="captcha" alt="error" onclick="loadcaptcha()" src=""/>
       			  <input type="text" name="Captcha" placeholder="Enter Captcha"  required="required">
@@ -577,6 +607,22 @@ body, html {
         })
         .catch(err => alert('Error verifying OTP.'));
     }
+    
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const passwordIcon = document.getElementById('passwordIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordIcon.classList.remove('fa-eye');
+            passwordIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            passwordIcon.classList.remove('fa-eye-slash');
+            passwordIcon.classList.add('fa-eye');
+        }
+    }
+
     </script>
     
 <script>
