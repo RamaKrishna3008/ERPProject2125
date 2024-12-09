@@ -122,10 +122,10 @@ public class StudentCourseMapping {
         else if (total >= 60 && studentInternals >= 25 && studentExternals >= 16) {
             grade = 7;
         } 
-        else if (total >= 50 ) {
+        else if (total >= 50 && studentInternals >= 25 && studentExternals >= 16 ) {
             grade = 6;
         } 
-        else if (total >= 40) {
+        else if (total >= 40 && studentInternals >= 25 && studentExternals >= 16) {
             grade = 5;
         } 
         else if(studentInternals <= 25 || studentExternals <= 16)
