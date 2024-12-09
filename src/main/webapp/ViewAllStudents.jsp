@@ -413,8 +413,7 @@ h3 u {
 <th>Academic Year</th>
 <th>ID</th>
 <th>Name</th>
-<th>Father Name</th>
-<th>Mother Name</th>
+<th>Fee Due</th>
 <th>Contact No</th>
 <th>Status</th>
 <th>Registration Status</th>
@@ -428,8 +427,7 @@ h3 u {
 <td> <c:out value="${student.batchname}"></c:out>  </td>
 <td> <c:out value="${student.id}"></c:out>  </td>
 <td> <c:out value="${student.name}"></c:out>   </td>
-<td> <c:out value="${student.fatherName}"></c:out>   </td>
-<td> <c:out value="${student.motherName}"></c:out>   </td>
+<td> <c:out value="${student.feeDue}"></c:out>   </td>
 <td> <c:out value="${student.contact}"></c:out>   </td>
 <td> <c:out value="${student.status}"></c:out>   </td>
 <td> <c:out value="${student.registarationStatus}"></c:out>   </td>

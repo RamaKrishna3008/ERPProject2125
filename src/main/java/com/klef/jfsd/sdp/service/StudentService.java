@@ -8,12 +8,14 @@ import com.klef.jfsd.sdp.model.Course;
 import com.klef.jfsd.sdp.model.Faculty;
 import com.klef.jfsd.sdp.model.FacultyCourseMapping;
 import com.klef.jfsd.sdp.model.FacultyStudentCourseMaterials;
+import com.klef.jfsd.sdp.model.FeePayments;
 import com.klef.jfsd.sdp.model.Feedback;
 import com.klef.jfsd.sdp.model.Student;
 import com.klef.jfsd.sdp.model.StudentCourseMapping;
 
 public interface StudentService{
 	public Student studentLogin(String id, String password);
+	
 	public boolean updateStudent(Student st);
 	
 	
@@ -37,4 +39,10 @@ public interface StudentService{
 	public long countCourseIdAndStudentId(int cid, String sid);
 	public long getRegisteredCoursesCount(Student s);
 	public List<StudentCourseMapping> ViewAllCourses(Student s);
+
+	public void AddFeePayment(FeePayments f);
+
+	public FeePayments ViewByOrderId(String OrderId);
+
+	public List<FeePayments> ViewStudentPayments(String stdid);
 }

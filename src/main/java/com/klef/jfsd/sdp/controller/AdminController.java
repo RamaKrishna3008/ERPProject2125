@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.klef.jfsd.sdp.model.Course;
 import com.klef.jfsd.sdp.model.Faculty;
 import com.klef.jfsd.sdp.model.FacultyCourseMapping;
+import com.klef.jfsd.sdp.model.FeePayments;
 import com.klef.jfsd.sdp.model.Student;
 import com.klef.jfsd.sdp.model.StudentCourseMapping;
 import com.klef.jfsd.sdp.service.AdminService;
@@ -573,6 +574,16 @@ public class AdminController
 	    mv.setViewName("redirect:/Admin/viewallcourses");
 
 	    return mv;
+	}
+	
+	@GetMapping("AllPayments")
+	public ModelAndView AllPayments()
+	{
+		ModelAndView mv = new ModelAndView();
+		List<FeePayments> fee = service.ViewPaidPayments();
+		mv.setViewName("AllPayments");
+		mv.addObject("fee",fee);
+		return mv;
 	}
 	
 	@GetMapping("/feedbackSummary")

@@ -1,5 +1,15 @@
+<%@page import="com.klef.jfsd.sdp.model.Admin"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" isELIgnored="false"%>
+    
+    <%
+Admin a = (Admin)session.getAttribute("Admin");
+if(a==null)
+{
+	response.sendRedirect("/SessionExpiry");
+	return ;
+}
+%>
     
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
@@ -185,12 +195,12 @@ h3 u {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 18px;
+    padding: 14px;
     text-align: left;
 }
 
 #myTable td {
-    padding: 16px;
+    padding: 10px;
     border-bottom: 1px solid #edf2f7;
     vertical-align: middle;
     font-size: 0.95rem;
@@ -212,7 +222,7 @@ h3 u {
 /* Action Buttons */
 #myTable td .action-cell {
     display: flex;
-    gap: 10px;
+    gap: px;
 }
 
 #myTable td a {
@@ -220,19 +230,17 @@ h3 u {
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
-    border-radius: 6px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     transition: all 0.3s ease;
-    min-width: 80px;
+    min-width: 100px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#myTable td a:nth-child(1) { background-color: #4CAF50; color: white; }
-#myTable td a:nth-child(2) { background-color: #2196F3; color: white; }
-#myTable td a:nth-child(4) { background-color: #f44336; color: white; }
-#myTable td a:nth-child(3) { background-color: #FF9800; color: white; }
+#myTable td a:nth-child(1) { background-color: #2196F3; color: white; }
+#myTable td a:nth-child(2) { background-color: #FF9800; color: white; }
 
 #myTable td a:hover {
     transform: translateY(-2px);
@@ -262,7 +270,65 @@ h3 u {
         padding: 12px;
     }
 }
+.action-links {
+    padding: 4px !important;
+}
 
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    align-items: center;
+}
+
+.action-grid a {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .action-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+    
+    .action-grid a {
+        font-size: 0.6rem;
+        padding: 3px 6px;
+    }
+}
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    min-width: 300px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1200;
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+.toast.success {
+    background: linear-gradient(145deg, #4CAF50, #43A047);
+    color: white;
+}
+
+.toast.failure {
+    background: linear-gradient(145deg, #f44336, #e53935);
+    color: white;
+}
     </style>
     
     <script>
@@ -307,8 +373,8 @@ h3 u {
     <!-- Wrap your existing content in a main-content div -->
     <div class="main-content" id="mainContent">
         <!-- Your existing content here -->
-        <h3 align="center"><u>View All Student</u></h3>
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Enter Student Name">
+        <h3 align="center"><u>View All Payments</u></h3>
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Enter Student Id">
         <!-- Rest of your existing content -->
     </div>
 
@@ -341,33 +407,44 @@ h3 u {
 
 <tr class="header">
 
-<th>Student Image</th>
-<th>Academic Year</th>
-<th>ID</th>
-<th>Name</th>
-<th>Contact No</th>
-<th>CGPA</th>
-<th>Address</th>
+<th>S no</th>
+<th>Student ID</th>
+<th>Amount</th>
+<th>Payment Status</th>
+<th>Payment Date</th>
+<th>Razor Pay Order Id</th>
 </tr>
 
-<c:forEach items="${studentlist}" var="student">
-
-<tr>
-<td><img src='../Admin/displaystudentimage?id=${student.id}' width="10%" height="10%" > </td>
-<td> <c:out value="${student.batchname}"></c:out>  </td>
-<td> <c:out value="${student.id}"></c:out>  </td>
-<td> <c:out value="${student.name}"></c:out>   </td>
-<td> <c:out value="${student.contact}"></c:out>   </td>
-<td> <c:out value="${student.mycgpa}"></c:out>   </td>
-<td> <c:out value="${student.address}"></c:out>   </td>
-
-
-</tr>
-
-</c:forEach>
-
+<c:forEach items="${fee}" var="fee" varStatus="status">
+            <tr>
+                <td><c:out value="${status.index+1}" /></td>
+                <td><c:out value="${fee.amount}" /></td>
+                <td><c:out value="${fee.studentId}" /></td>
+                <td><c:out value="${fee.paymentStatus}" /></td>
+                <td><c:out value="${fee.paymentDate}" /></td> 
+                <td><c:out value="${fee.orderId}" /></td>               
+            </tr>
+        </c:forEach>
 </table>
 
+<div id="toast" class="toast"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            if (message) {
+                const toast = document.getElementById("toast");
+                toast.textContent = message;
+                
+                    toast.classList.add("show", "success");
+                
+                
+                setTimeout(() => {
+                    toast.classList.remove("show", "success");
+                }, 3000);
+            }
+        });
+    </script>
     
 </body>
 

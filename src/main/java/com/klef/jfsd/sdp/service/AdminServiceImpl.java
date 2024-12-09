@@ -12,6 +12,7 @@ import com.klef.jfsd.sdp.model.Admin;
 import com.klef.jfsd.sdp.model.Course;
 import com.klef.jfsd.sdp.model.Faculty;
 import com.klef.jfsd.sdp.model.FacultyCourseMapping;
+import com.klef.jfsd.sdp.model.FeePayments;
 import com.klef.jfsd.sdp.model.Feedback;
 import com.klef.jfsd.sdp.model.Student;
 import com.klef.jfsd.sdp.model.StudentCourseMapping;
@@ -19,6 +20,7 @@ import com.klef.jfsd.sdp.repository.AdminRepository;
 import com.klef.jfsd.sdp.repository.CourseRepository;
 import com.klef.jfsd.sdp.repository.FacultyCourseMappingRepository;
 import com.klef.jfsd.sdp.repository.FacultyRepository;
+import com.klef.jfsd.sdp.repository.FeePaymentRepository;
 import com.klef.jfsd.sdp.repository.FeedbackRepository;
 import com.klef.jfsd.sdp.repository.StudentCourseMappingRepository;
 import com.klef.jfsd.sdp.repository.StudentRepository;
@@ -46,6 +48,9 @@ public class AdminServiceImpl implements AdminService
 	
 	@Autowired
     private FeedbackRepository feedbackRepository;
+	
+	@Autowired
+	FeePaymentRepository feePaymentRepository ;
 	
 	@Override
 	public Admin checkAdminLogin(String username, String password) 
@@ -231,6 +236,11 @@ public class AdminServiceImpl implements AdminService
 	        }
 	    }
 	    return feedbackSummary;
+	}
+	@Override
+	public List<FeePayments> ViewPaidPayments()
+	{
+		return feePaymentRepository.viewPaidPayments();
 	}
 	
 	private String capitalize(String str) {

@@ -354,6 +354,7 @@ h3 u {
         <p><span class="label">Contact No:</span> <span class="value"><c:out value="${student.contact}" /></span></p>
         <p><span class="label">CGPA:</span> <span class="value"><c:out value="${student.mycgpa}" /></span></p>
         <p><span class="label">Parent Email:</span> <span class="value"><c:out value="${student.parentEmail}" /></span></p>
+        <p><span class="label">Fee Due:</span> <span class="value"><c:out value="${student.feeDue}" /></span></p>
         <p><span class="label">Status:</span> <span class="value"><c:out value="${student.status}" /></span></p>
         <p><span class="label">Registartion Status:</span> <span class="value"><c:out value="${student.registarationStatus}" /></span></p>
         <p><span class="label">Creation Time:</span> <br><span class="value"><c:out value="${student.createdAt}" /></span></p>

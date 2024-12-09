@@ -31,6 +31,7 @@ if (st == null) {
 	<button class="nav-button" onclick="window.location.href='/Student/MyCGPA'">My CGPA</button>
 	<button class="nav-button" onclick="window.location.href='/Student/EndSemResultHome'">End Sem Result</button>
 	<button class="nav-button" onclick="window.location.href='/Student/AttendanceRegisterHome'">Attendance</button>
+	<button class="nav-button" onclick="window.location.href='/Student/FeePayment'">Fee Payments</button>
 	<button class="nav-button" onclick="window.location.href='/Logout'">Logout</button>
 </div>
 <div class="profile-pic-container">

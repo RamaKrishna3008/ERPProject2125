@@ -71,7 +71,8 @@ label {
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="number"] {
     width: 100%;
     padding: 12px 16px;
     border: 2px solid #e2e8f0;
@@ -84,7 +85,8 @@ input[type="password"] {
 
 input[type="text"]:focus,
 input[type="email"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="number"]:focus {
     outline: none;
     border-color: #1a237e;
     box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
@@ -92,7 +94,8 @@ input[type="password"]:focus {
 
 input[type="text"]:hover,
 input[type="email"]:hover,
-input[type="password"]:hover {
+input[type="password"]:hover,
+input[type="number"]:hover {
     border-color: #cbd5e0;
 }
 
@@ -204,7 +207,8 @@ input[type="reset"]:hover {
 
     input[type="text"],
     input[type="email"],
-    input[type="password"] {
+    input[type="password"],
+     input[type="number"] {
         padding: 10px 14px;
         font-size: 0.95rem;
     }
@@ -244,7 +248,8 @@ input[type="reset"]:hover {
             <input type="email" id="email" name="email" required>
 
             <label for="contactno">Contact No</label>
-            <input type="text" id="contactno" name="contactno" required>
+		<input type="number" id="contactno" name="contactno" required pattern="[6-9]{1}[0-9]{9}">
+		<small id="contactnoError" style="color: red; display: none;">Invalid contact number. It should start with 6, 7, 8, or 9 and be 10 digits long.</small>
             
             <label for="profileImage">Profile Image (JPG only)</label>
             <input type="file" id="profileImage" name="profileImage" accept=".jpg">
@@ -276,5 +281,31 @@ input[type="reset"]:hover {
             }
         });
     </script>
+    <script>
+    document.getElementById("contactno").addEventListener("input", function() {
+        const contactField = document.getElementById("contactno");
+        const errorField = document.getElementById("contactnoError");
+
+        const phoneNumberPattern = /^[6-9]\d{9}$/; 
+        if (phoneNumberPattern.test(contactField.value)) {
+            errorField.style.display = "none";
+            contactField.setCustomValidity(""); 
+        } else {
+            errorField.style.display = "block";
+            contactField.setCustomValidity("Invalid contact number.");
+        }
+    });
+
+    function checkEmailVerification() {
+        const contactField = document.getElementById("contactno");
+        const phoneNumberPattern = /^[6-9]\d{9}$/;
+
+        if (!phoneNumberPattern.test(contactField.value)) {
+            contactField.focus();
+            return false; 
+        }
+        return true; 
+    }
+</script>
 </body>
 </html>

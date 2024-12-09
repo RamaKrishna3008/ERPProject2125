@@ -1,8 +1,8 @@
 package com.klef.jfsd.sdp.service;
 
 import java.awt.Color;
+
 import java.awt.Font;
-import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;

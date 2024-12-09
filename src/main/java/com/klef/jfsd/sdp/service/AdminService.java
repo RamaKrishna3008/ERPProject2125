@@ -8,6 +8,7 @@ import com.klef.jfsd.sdp.model.Admin;
 import com.klef.jfsd.sdp.model.Course;
 import com.klef.jfsd.sdp.model.Faculty;
 import com.klef.jfsd.sdp.model.FacultyCourseMapping;
+import com.klef.jfsd.sdp.model.FeePayments;
 import com.klef.jfsd.sdp.model.Student;
 import com.klef.jfsd.sdp.model.StudentCourseMapping;
 
@@ -51,6 +52,7 @@ public interface AdminService
 	public long CourseCount();
 	public long FacultyCount();
 	public long StudentCount();
+	public List<FeePayments> ViewPaidPayments();
 	
 	  
 	

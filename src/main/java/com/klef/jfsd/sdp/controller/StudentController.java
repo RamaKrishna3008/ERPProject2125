@@ -2,10 +2,13 @@ package com.klef.jfsd.sdp.controller;
 
 
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Blob;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +17,10 @@ import java.util.Random;
 
 import javax.sql.rowset.serial.SerialBlob;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,6 +30,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,10 +40,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.klef.jfsd.sdp.model.Course;
 import com.klef.jfsd.sdp.model.Faculty;
 import com.klef.jfsd.sdp.model.FacultyStudentCourseMaterials;
+import com.klef.jfsd.sdp.model.FeePayments;
 import com.klef.jfsd.sdp.model.Feedback;
 import com.klef.jfsd.sdp.model.Student;
 import com.klef.jfsd.sdp.model.StudentCourseMapping;
 import com.klef.jfsd.sdp.service.StudentService;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
 
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -86,7 +95,7 @@ public class StudentController
 	        }
 		
 		
-		Student st = new Student(id, name, fatherName, motherName, contact,email, address, password, status,blob,batch,registarationStatus);
+		Student st = new Student(id, name, fatherName, motherName, contact,email, address, password, status,blob,batch,registarationStatus,20000);
 		
 		if(studentService.updateStudent(st)) {
 			 HttpSession session = request.getSession();
@@ -605,5 +614,121 @@ public class StudentController
 		 return grade;
 		
 	}
+	@GetMapping("FeePayment")
+	public ModelAndView FeePayment()
+	{
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("FeePayment");
+		return mv;
+	}
+	@GetMapping("PayFee")
+	public ModelAndView PayFee()
+	{
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("PayFee");
+		return mv;
+	}
+
+	@PostMapping("/createOrder")
+	@ResponseBody
+	public ResponseEntity<?> createOrder(@RequestBody Map<String, Object> orderData) {
+	    try {
+	        String studentId = (String) orderData.get("studentId");
+	        float feeAmount = Float.parseFloat((String) orderData.get("feeAmount"));
+
+	        int amountInPaise = (int) (feeAmount * 100);
+
+	        RazorpayClient razorpay = new RazorpayClient("rzp_test_d3yeHrfHXiLZIN", "CpVoDQVUbOXToopUN60YyEzk");
+
+	        JSONObject orderRequest = new JSONObject();
+	        orderRequest.put("amount", amountInPaise);
+	        orderRequest.put("currency", "INR");
+	        orderRequest.put("receipt", "order_rcpt_" + studentId);
+
+	        Order order = razorpay.orders.create(orderRequest);
+	        LocalDate today = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = today.format(formatter);
+	        FeePayments feePayment = new FeePayments();
+	        feePayment.setStudentId(studentId);
+	        feePayment.setAmount(feeAmount);
+	        feePayment.setPaymentStatus("Pending");
+	        feePayment.setPaymentDate(formattedDate);
+	        feePayment.setOrderId(order.get("id"));
+	        studentService.AddFeePayment(feePayment);
+
+	        return ResponseEntity.ok(order.toString());
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating order: " + e.getMessage());
+	    }
+	}
+	
+	@PostMapping("/savePayment")
+	@ResponseBody
+	public ResponseEntity<?> savePayment(@RequestBody Map<String, Object> paymentData,HttpServletRequest request,HttpServletResponse response) {
+	    try {
+	        String orderId = (String) paymentData.get("orderId");
+	        HttpSession session = request.getSession();
+			Student s = (Student) session.getAttribute("student");
+			if(s==null)
+			{
+				response.sendRedirect("/SessionExpiry");
+				return null ;
+			}
+			String studentId=s.getId();
+
+	        FeePayments feePayment = studentService.ViewByOrderId(orderId);
+	        if (feePayment != null) {
+	            feePayment.setPaymentStatus("Paid");
+	            feePayment.setOrderId(orderId);
+	            studentService.AddFeePayment(feePayment);
+
+	            s.setFeeDue(0);
+	            studentService.updateStudent(s);
+	            session.removeAttribute("student");
+				session.setAttribute("student", studentService.viewStudentById(studentId));
+				session.setMaxInactiveInterval(300);
+	            return ResponseEntity.ok("Payment saved successfully");
+	        } else {
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order not found");
+	        }
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving payment: " + e.getMessage());
+	    }
+	}
+	
+	@GetMapping("MyPayments")
+	public ModelAndView MyPayments(HttpServletRequest request,HttpServletResponse response) throws IOException
+	{
+		ModelAndView mv = new ModelAndView();
+		HttpSession session = request.getSession();
+		Student s = (Student) session.getAttribute("student");
+		if(s==null)
+		{
+			response.sendRedirect("/SessionExpiry");
+			return null ;
+		}
+		
+		List<FeePayments> fee = studentService.ViewStudentPayments(s.getId());
+		mv.setViewName("MyPayments");
+		if(fee.isEmpty())
+			mv.addObject("msg","No Payments available ");
+		else
+			mv.addObject("fee",fee);
+		return mv;
+	}
+	
+	@GetMapping("/**")
+    public String handleInvalidMapping() {
+        return "redirect:/Student/pagenotfound";
+    }
+    
+    @GetMapping("/pagenotfound")
+    public ModelAndView pageNotFound() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("error-404"); // This view should correspond to a 404 page
+        return mv;
+    }
+
 	
 }

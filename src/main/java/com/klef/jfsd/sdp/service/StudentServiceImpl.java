@@ -1,16 +1,20 @@
 package com.klef.jfsd.sdp.service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.klef.jfsd.sdp.model.Course;
 import com.klef.jfsd.sdp.model.Faculty;
 import com.klef.jfsd.sdp.model.FacultyCourseMapping;
 import com.klef.jfsd.sdp.model.FacultyStudentCourseMaterials;
+import com.klef.jfsd.sdp.model.FeePayments;
 import com.klef.jfsd.sdp.model.Feedback;
 import com.klef.jfsd.sdp.model.Student;
 import com.klef.jfsd.sdp.model.StudentCourseMapping;
@@ -19,6 +23,7 @@ import com.klef.jfsd.sdp.repository.CourseRepository;
 import com.klef.jfsd.sdp.repository.FacultyCourseMappingRepository;
 import com.klef.jfsd.sdp.repository.FacultyRepository;
 import com.klef.jfsd.sdp.repository.FacultyStudentCourseMaterialsRepository;
+import com.klef.jfsd.sdp.repository.FeePaymentRepository;
 import com.klef.jfsd.sdp.repository.FeedbackRepository;
 import com.klef.jfsd.sdp.repository.StudentCourseMappingRepository;
 import com.klef.jfsd.sdp.repository.StudentRepository;
@@ -38,6 +43,9 @@ public class StudentServiceImpl implements StudentService{
 	FacultyStudentCourseMaterialsRepository materialsRepository;
 	
 	@Autowired
+	FeePaymentRepository feePaymentRepository ;
+	
+	@Autowired
 	CourseRepository courseRepository;
 	
 	@Autowired
@@ -49,6 +57,21 @@ public class StudentServiceImpl implements StudentService{
 	@Autowired
     private FeedbackRepository feedbackRepository;
 
+	
+	 @Scheduled(cron = "0 0 0 * * *") 
+	    public void incrementFees() {
+	        List<Student> students = studentRepository.findAll();
+	        for (Student student : students) {
+	            LocalDateTime lastIncrement = student.getCreatedAt();
+	            long daysSinceLastIncrement = ChronoUnit.DAYS.between(lastIncrement, LocalDateTime.now());
+
+	            if (daysSinceLastIncrement >= 5) {
+	                long increments = daysSinceLastIncrement / 5;
+	                student.setFeeDue(student.getFeeDue() + increments * 20000);
+	                studentRepository.save(student);
+	            }
+	        }
+	 }
 	
 	@Override
 	public Student studentLogin(String id, String password) {
@@ -202,5 +225,25 @@ public class StudentServiceImpl implements StudentService{
 	  {
 	    
 	    return studentCourseMappingRepository.findByStudent(s);
+	  }
+	
+	@Override
+	  public void AddFeePayment(FeePayments f) 
+	  {
+	    
+	    feePaymentRepository.save(f);
+	  }
+	@Override
+	  public FeePayments ViewByOrderId(String OrderId) 
+	  {
+	    
+	    return feePaymentRepository.findByOrderId(OrderId);
+	  }
+	
+	@Override
+	  public List<FeePayments> ViewStudentPayments(String stdid) 
+	  {
+	    
+	    return feePaymentRepository.findByStudentId(stdid);
 	  }
 }

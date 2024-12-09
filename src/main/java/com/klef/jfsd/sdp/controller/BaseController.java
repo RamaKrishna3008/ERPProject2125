@@ -303,6 +303,8 @@ public String validateCaptcha(HttpServletRequest request) {
     	return "Wrong Captcha";
 }
 
+
+
 @GetMapping("SessionExpiry")
 public ModelAndView sessionexpiry()
 {
@@ -313,12 +315,11 @@ public ModelAndView sessionexpiry()
 	
 }
 
-@GetMapping("/error-404")
-public ModelAndView handle404Error()
-{
-   ModelAndView mv = new ModelAndView();
-   mv.setViewName("error-404");
-   return mv;
+@GetMapping("/{path:^(?!Student$|Faculty$).*$}")
+public ModelAndView handleNotFound(@PathVariable String path) {
+    ModelAndView mv = new ModelAndView();
+    mv.setViewName("error-404");
+    return mv;
 }
 	
 }

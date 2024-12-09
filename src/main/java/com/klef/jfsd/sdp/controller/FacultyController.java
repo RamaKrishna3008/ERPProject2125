@@ -404,14 +404,16 @@ public class FacultyController
 		return mv;
 		
 	}
-
 	
-	@GetMapping("/SessionExpiry")
-	public ModelAndView SessionExpiry()
-	{
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("Faculty_sessionexpiry");
-		return mv;
-	}
-	
+	@RequestMapping("/**")
+    public String handleInvalidMapping() {
+        return "redirect:/Faculty/pagenotfound";
+    }
+    
+    @GetMapping("/pagenotfound")
+    public ModelAndView pageNotFound() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("error-404"); // This view should correspond to a 404 page
+        return mv;
+    }
 }

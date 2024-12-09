@@ -37,6 +37,17 @@ public class Student {
 	private String batchname;
 	@Column(nullable = false)
 	private float mycgpa=-1;
+	@Column(nullable = false)
+	private float feeDue = 20000;
+
+	public float getFeeDue() {
+	    return feeDue;
+	}
+
+	public void setFeeDue(float feeDue) {
+	    this.feeDue = feeDue;
+	}
+
 	
 	@Column(nullable = false)
 	private String registarationStatus;
@@ -129,7 +140,7 @@ public class Student {
 	
 
 	public Student(String id, String name, String fatherName, String motherName, String contact,String parentEmail, String address,
-			String password, String status, Blob image,String batchname,String registarationStatus) {
+			String password, String status, Blob image,String batchname,String registarationStatus,float feeDue) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -143,6 +154,7 @@ public class Student {
 		this.image = image;
 		this.batchname=batchname;
 		this.registarationStatus=registarationStatus;
+		this.feeDue=feeDue;
 	}
 
 	public Student() {

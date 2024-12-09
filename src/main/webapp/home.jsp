@@ -9,97 +9,73 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
-    /* Expanded Color Palette */
-    --primary-color: #4a90e2;      /* Blue */
-    --secondary-color: #191919;    /* Soft Red */
-    --accent-color: #4ecdc4;       /* Teal */
-    --background-light: #f4f4f4;   /* Light Gray */
-    --text-color: #333333;
-    --gradient-primary: linear-gradient(135deg, #1d1e23, #1d1e23);
-    --gradient-secondary: linear-gradient(135deg, #3185fc, #3185fc);
-}
+            /* Expanded Color Palette */
+            --primary-color: #4a90e2;      /* Blue */
+            --secondary-color: #191919;    /* Soft Red */
+            --accent-color: #4ecdc4;       /* Teal */
+            --background-light: #f4f4f4;   /* Light Gray */
+            --text-color: #333333;
+            --gradient-primary: linear-gradient(135deg, #1d1e23, #1d1e23);
+            --gradient-secondary: linear-gradient(135deg, #3185fc, #3185fc);
+        }
 
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: var(--background-light);
-    color: var(--text-color);
-}
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-color);
+            scroll-behavior: smooth;
+        }
 
-.hero {
-    background: var(--gradient-primary);
-    position: relative;
-    overflow: hidden;
-    color: white;
-}
+        /* Navbar Improvements */
+        .navbar {
+            background: var(--gradient-primary) !important;
+            transition: background 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent 50%);
-}
+        .navbar-nav .nav-link {
+            color: white;
+            margin: 0 10px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
 
-/* Colorful Feature Cards */
-.feature-card {
-    background: white;
-    border: none;
-    transition: all 0.4s ease;
-    transform: translateY(0);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
 
-.feature-card:hover {
-    transform: translateY(-15px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-}
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-color);
+        }
 
-.feature-icon {
-    transition: all 0.4s ease;
-    color: var(--primary-color);
-}
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
 
-.feature-card:hover .feature-icon {
-    transform: rotate(360deg) scale(1.2);
-    color: var(--secondary-color);
-}
+        .navbar-nav .nav-link.active {
+            color: var(--accent-color);
+        }
 
-/* Colorful Buttons */
-.btn-custom {
-    background: var(--gradient-secondary);
-    color: white;
-    border: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(254, 202, 87, 0.4);
-}
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
 
-.btn-custom:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(254, 202, 87, 0.6);
-    color: white;
-}
-
-/* Carousel Enhancements */
-.carousel-indicators [data-bs-target] {
-    background-color: var(--primary-color);
-    opacity: 0.5;
-}
-
-.carousel-indicators .active {
-    background-color: var(--secondary-color);
-    opacity: 1;
-}
-
-.carousel-caption {
-    background: rgba(74, 144, 226, 0.7);
-    border-radius: 10px;
-    padding: 15px;
-}
-
-/* Navbar Styling */
-.navbar {
+        /* Hero Section Improvements */
+        .hero {
+            background: var(--gradient-primary);
+            position: relative;
+            overflow: hidden;
+            color: white;
+            padding: 100px 0;
+        }
+        .navbar {
     background: var(--gradient-primary) !important;
 }
 
@@ -251,61 +227,138 @@ html {
     }
 }
 
-/* Dark Mode Logo Enhancements */
-@media (prefers-color-scheme: dark) {
-    .navbar-brand {
-        color: #f0f0f0;
+        
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent 50%);
+        }
+
+        /* Section Spacing and Typography */
+        section {
+            padding: 80px 0;
+        }
+
+        .display-4 {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .display-6 {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Existing Feature Cards and Other Styles Remain the Same */
+        .feature-card {
+            background: white;
+            border: none;
+            transition: all 0.4s ease;
+            transform: translateY(0);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            transition: all 0.4s ease;
+            color: var(--primary-color);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotate(360deg) scale(1.2);
+            color: var(--secondary-color);
+        }
+
+        /* Smooth Scroll and Responsive Adjustments */
+        @media (max-width: 768px) {
+            .display-4 {
+                font-size: 2.5rem;
+            }
+
+            .display-6 {
+                font-size: 1.75rem;
+            }
+
+            .navbar-nav .nav-link {
+                text-align: center;
+                margin: 10px 0;
+            }
+        }
+
+        /* Additional Global Styles */
+        .btn-custom {
+            background: var(--gradient-secondary);
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(49, 133, 252, 0.4);
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(49, 133, 252, 0.6);
+            color: white;
+        }
+.carousel-indicators [data-bs-target] {
+    background-color: var(--primary-color);
+    opacity: 0.5;
+}
+
+.carousel-indicators .active {
+    background-color: var(--secondary-color);
+    opacity: 1;
+}
+
+.carousel-caption {
+    background: white;
+    color:rgba(74, 144, 226, 0.7);
+    border-radius: 10px;
+    padding: 15px;
+}
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2.5rem;
     }
 
-    .navbar-brand img {
-        filter: brightness(0.9) contrast(1.2);
+    .display-6 {
+        font-size: 1.75rem;
     }
 }
 
-/* Logo Animation */
-@keyframes logoGlow {
-    0%, 100% { 
-        box-shadow: 0 4px 6px rgba(74, 144, 226, 0.2);
-    }
-    50% { 
-        box-shadow: 0 6px 10px rgba(74, 144, 226, 0.4);
-    }
-}
-
-.navbar-brand img.logo-animated {
-    animation: logoGlow 3s ease-in-out infinite;
-}
-
-/* High Contrast and Accessibility */
-.navbar-brand img.high-contrast {
-    filter: contrast(1.2) brightness(1.1);
-}
-
-/* Print Optimization */
-@media print {
-    .navbar-brand img {
-        filter: grayscale(100%);
-    }
-}
     </style>
 </head>
 <body>
-    
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
         <div class="container">
             <a class="navbar-brand fw-bold" href="login">
-   				 <img src="/images/University Logo.jpg" class="logo-animated" />SHS University
-				</a>
+   				<img src="/images/University Logo.jpg" class="logo-animated" />SHS University
+			</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact Us</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
     
+    <!-- Rest of the HTML remains the same as in the original document -->
     <div class="container py-5">
         <div class="row align-items-center">
             <div class="col-md-7">
@@ -329,7 +382,7 @@ html {
         </div>
     </div>
 
-    <section class="py-5 bg-light">
+    <section id="features" class="py-5 bg-light">
         <div class="container py-4">
             <div class="text-center mb-5">
                 <h2 class="display-6 fw-bold">Our Powerful Features</h2>
@@ -372,8 +425,7 @@ html {
             </div>
         </div>
     </section>
-
-    <!-- Carousel Section -->
+      <!-- Carousel Section -->
     <section class="py-5">
         <div class="container">
             <div id="featuresCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -415,6 +467,72 @@ html {
             </div>
         </div>
     </section>
+
+    <!-- Rest of the sections from the original document remain the same -->
+    <section id="contact" class="py-5 bg-light">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold">Contact Us</h2>
+                <p class="lead text-muted">We'd love to hear from you!</p>
+            </div>
+            <div class="row g-4">
+                <!-- Contact Info -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h3 class="h4 fw-bold">Get in Touch</h3>
+                            <p class="text-muted">
+                                Reach out for any queries or support.
+                            </p>
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="fas fa-envelope text-primary me-2"></i>
+                                    <strong>Email:</strong> <a href="mailto:beast375683@gmail.com">info@shsuniversity.edu</a>
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-phone-alt text-primary me-2"></i>
+                                    <strong>Phone:</strong> +91 8555968162
+                                </li>
+                                <li>
+                                    <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                    <strong>Address:</strong> Green Fields, Vaddeswaram, Andhra Pradesh 522302
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Google Map -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-0">
+                            <div id="map" style="height: 350px; width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Google Map
+        function initMap() {
+            var universityLocation = { lat: 16.4419, lng: 80.6226 }; // Replace with your university's coordinates
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: universityLocation
+            });
+            var marker = new google.maps.Marker({
+                position: universityLocation,
+                map: map,
+                title: "SHS University"
+            });
+        }
+    </script>
+
+    <script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCL5wnFyttFMzMvEYcZjjBX4qG7bNK5e-w&callback=initMap">
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
