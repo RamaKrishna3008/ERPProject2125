@@ -430,6 +430,8 @@ public class StudentController
 	        	details.put("courseCode", course.getCoursecode());
 	        	details.put("section",sec );
 	        	details.put("attendancePercentage", studentService.getStudentAttedance(course, s,sec));
+	        	details.put("totalclasses", studentService.getTotalClassesConducted(course, sec));
+	        	details.put("totalclassesattended", studentService.getTotalAttendendClasses(course, s));
 
 	        	attendanceDetails.add(details);
 	    	}

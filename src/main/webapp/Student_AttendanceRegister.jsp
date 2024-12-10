@@ -84,7 +84,6 @@ h2::after {
     border-radius: 2px;
 }
 
-/* Enhanced Table Styles */
 table {
     width: 100%;
     border-collapse: separate;
@@ -119,7 +118,6 @@ tr:hover {
     background-color: rgba(0, 123, 255, 0.05);
 }
 
-/* Register and Course Materials Links */
 .register-link, .course-materials-link {
     display: inline-block;
     padding: 12px 25px;
@@ -170,7 +168,6 @@ tr:hover {
     box-shadow: 0 5px 15px rgba(33, 136, 56, 0.3);
 }
 
-/* Responsive Design */
 @media screen and (max-width: 1024px) {
     .form-container {
         width: 95%;
@@ -257,6 +254,8 @@ h1[align="center"] {
             <th>Course Name</th>
             <th>Course Code</th>
             <th>Section</th>
+            <th>Total Classes Conducted</th>
+            <th>Total Classes Attended</th>
             <th>Attendance Percentage</th>
         </tr>
     </thead>
@@ -266,6 +265,8 @@ h1[align="center"] {
                 <td>${details.courseName}</td>
                 <td>${details.courseCode}</td>
                 <td>${details.section}</td>
+                <td>${details.totalclasses }</td>
+                <td>${details.totalclassesattended }</td>
                 <td>${details.attendancePercentage}%</td>
             </tr>
         </c:forEach>

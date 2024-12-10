@@ -45,4 +45,8 @@ public interface StudentService{
 	public FeePayments ViewByOrderId(String OrderId);
 
 	public List<FeePayments> ViewStudentPayments(String stdid);
+
+	public long getTotalAttendendClasses(Course course, Student student);
+
+	public long getTotalClassesConducted(Course course, int section);
 }

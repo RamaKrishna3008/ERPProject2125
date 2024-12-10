@@ -171,6 +171,18 @@ public class StudentServiceImpl implements StudentService{
 	}
 	
 	@Override
+	public long getTotalClassesConducted(Course course,int section)
+	{
+		return attendanceRepository.countByCourseAndSection(course, section);		
+	}
+	@Override
+	public long getTotalAttendendClasses(Course course, Student student)
+	{
+		return attendanceRepository.countByStudentAndCourseAndPresentTrue(student,course);		
+	}
+	
+	
+	@Override
 	public  List<Course> viewCourseBySem(String ay,String sem) {
 		return courseRepository.findByAcademicYearAndOfferedsem(ay, sem);
 	}
